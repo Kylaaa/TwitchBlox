@@ -1,0 +1,10 @@
+{
+	"name" : "TwitchBlox",
+	"globIgnorePaths": ["**/*.server.lua", "**/*.client.lua", "**/*.spec.lua"],
+	"tree" : {
+		"$path" : "Src",
+		"Packages" : {
+			"$path" : "Packages"
+		}
+	}
+}
