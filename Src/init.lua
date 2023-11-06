@@ -4,7 +4,7 @@ local Karen = require(Packages.Karen)
 
 local Managers = LibraryRoot.Managers
 
-local k = Karen.new("TwitchBlox")
+local sm = Karen.new("TwitchBlox")
 sm:registerSingleton(Managers.ConfigurationManager, {})
 sm:registerSingleton(Managers.LifecycleManager, {})
 sm:registerSingleton(Managers.LogManager, {
@@ -21,25 +21,29 @@ sm:registerSingleton(Managers.StateManager, {
 })
 sm:registerSingleton(Managers.TwitchBloxManager, {
 	Managers.ConfigurationManager,
-	Managers.PersistenceManager,
 	Managers.LogManager,
 	Managers.NetworkingManager,
-	Managers.NPCManager,
 	Managers.StateManager,
 })
 sm:initialize()
 
--- DEBUG
-local lm = sm:get("LogManager")
-lm.NewMessage:Connect(function(message)
-	print(message)
+-- If any messages come from the libary, log them through this event.
+-- Change the log level in the configuration file to log messages
+sm:get("LogManager").NewMessage:Connect(function(level, ...)
+	if sm:get("ConfigurationManager"):getValue("LOG_TO_OUTPUT") then
+		local outFunc = {
+			[lm.LogLevel.Error] = error,
+			[lm.LogLevel.Warning] = warn,
+			[lm.LogLevel.Message] = print,
+			[lm.LogLevel.Trace] = print,
+		}
+		outFunc[level](...)
+	end
 end)
 
 return {
-	Enums = require(script.Enums),
 	Configuration = require(script.Config)(sm),
+	Enums = require(script.Enums),
 	Events = require(script.Events)(sm),
-
-	-- 
 	Lifecycle = require(script.Lifecycle)(sm),
 }

@@ -20,35 +20,39 @@ function LogManager.new(dependencies : {})
 
 	local lm = {
 		logLevel = cm:getValue("LOGGING_LEVEL"),
-		NewMessage = Signal.new(), -- (logLevel : number, message : string) -> ()
+		NewMessage = Signal.new(), -- (logLevel : number, ... : any) -> ()
 	}
 	setmetatable(lm, LogManager)
+
+	cm.Updated:Connect(function()
+		lm.LogLevel = cm:getValue("LOGGING_LEVEL")
+	end)
 
 	return lm
 end
 
-function LogManager:log(level : number, message : string)
+function LogManager:log(level : number, ...)
 	assert(level ~= LogManager.LogLevel.None, "level cannot be `None`")
 
 	if level <= self.LogLevel then
-		self.NewMessage(level, message)
+		self.NewMessage:fire(level, ...)
 	end
 end
 
-function LogManager:error(message : string)
-	self:log(LogManager.Error, message)
+function LogManager:error(...)
+	self:log(LogManager.Error, ...)
 end
 
-function LogManager:warn(message : string)
-	self:log(LogManager.Warning, message)
+function LogManager:warn(...)
+	self:log(LogManager.Warning, ...)
 end
 
-function LogManager:message(message : string)
-	self:log(LogManager.Message, message)
+function LogManager:message(...)
+	self:log(LogManager.Message, ...)
 end
 
-function LogManager:trace(message : string)
-	self:log(LogManager.Trace, message)
+function LogManager:trace(...)
+	self:log(LogManager.Trace, ...)
 end
 
 return LogManager

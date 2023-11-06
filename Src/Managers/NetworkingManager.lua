@@ -29,9 +29,19 @@ function NetworkingManager.new(dependencies : {})
 		}),
 		connections = {},
 	}
-	setmetatable(nm, NetworkingManager)
+	
+	cm.Updated:Connect(function()
+		nm.protocol = if cm:getValue("HTTP_USE_HTTPS") then "https" else "http"
+		nm.host = cm:getValue("HTTP_HOST")
+		nm.port = cm:getValue("HTTP_PORT")
+		nm.interval = cm:getValue("HTTP_POLLING_INTERVAL")
+		nm.timeout = cm:getValue("HTTP_POLLING_TIMEOUT")
+		nm.httpImpl = Http.new({
+			DEBUG = cm:getValue("HTTP_DEBUG"),
+		})
+	end)
 
-	return nm
+	return setmetatable(nm, NetworkingManager)
 end
 
 function NetworkingManager:constructLocalhostUrl(path : string, args : {}?) : string
@@ -43,12 +53,12 @@ function NetworkingManager:constructLocalhostUrl(path : string, args : {}?) : st
 		end
 		argString = "?" .. table.concat(argList, "&")
 	end
+
 	return string.format("%s://%s:%s/%s%s", self.protocol, self.host, self.port, path, argString)
 end
 
 function NetworkingManager:authenticateWithTwitch(onResponse : ()->())
-	local sm = self.dependencies.StateManager
-	local events = getSubscribedTwitchEvents()
+	local events = getSubscribedTwitchEvents(self.dependencies.StateManager)
 	local scopes = {}
 	for eventName, eventData in pairs(events) do
 		table.insert(scopes, eventData.scope)
@@ -59,7 +69,7 @@ function NetworkingManager:authenticateWithTwitch(onResponse : ()->())
 	local targetUrl = self:constructLocalhostUrl("requestLogin", args)
 	self.httpImpl:GET(targetUrl):andThen(function(response)
 		-- hopefully returns a broadcasterId
-		print(response)
+		self.dependencies:get("LogManager"):trace(response)
 		onResponse(response)
 	end)
 end

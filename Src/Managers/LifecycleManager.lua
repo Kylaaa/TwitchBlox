@@ -10,11 +10,10 @@ local LifecycleManager = {}
 LifecycleManager.__index = LifecycleManager
 
 
-
 function LifecycleManager.new(dependencies : {})
 	local lm = {
 		Heartbeat = Signal.new(),
-		Connected = Signal.new()
+		Connected = Signal.new(),
 		ConnectedToLocalHost = Signal.new(),
 		Authenticated = Signal.new(),
 		Closing = Signal.new(), -- () -> ()
