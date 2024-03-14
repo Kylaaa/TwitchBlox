@@ -41,9 +41,12 @@ sm:get("LogManager").NewMessage:Connect(function(level, ...)
 	end
 end)
 
+sm:get("TwitchBloxManager")
+
 return {
 	Configuration = require(script.Config)(sm),
 	Enums = require(script.Enums),
-	Events = require(script.Events)(sm),
+	OnEventReceived = require(script.Events)(sm),
 	Lifecycle = require(script.Lifecycle)(sm),
+	Events = em.events,
 }

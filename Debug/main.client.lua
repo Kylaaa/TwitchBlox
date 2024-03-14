@@ -1,28 +1,27 @@
 local TwitchBlox = require(script.Parent.Library)
 
-TwitchBlox.Lifecycle:SetChannelName("Kylaaa_tv")
+-- Generic Callback
+TwitchBlox.OnEvent:Connect(function(eventName, id, eventData, receivedDate)
+	print(string.format("%s - Received %s with id (%s)", receivedDate, eventName, id), eventData)
+end)
 
---[[local events = {
-	"channel.cheer",
-	"channel.cheer",
-	"channel.follow",
-	"channel.subscribe",
-	"channel.subscription.gift",
-	"channel.subscription.message",
-	"channel.cheer",
-	"channel.raid",
-	"channel.hype_train.begin",
-	"channel.hype_train.progress"
-	"channel.hype_train.end",
-	"channel.channel_points_custom_reward_redemption.add",
-}]]
-
-for k, evt in pairs(TwitchBlox.Events) do
-	evt:Connect(function(eventArgs)
-		print(k, eventArgs)
-	end)
+-- Specialized Callbacks
+local function simpleEventLogger(...)
+	print(...)
 end
+TwitchBlox.Events.OnChannelCheer:Connect(simpleEventLogger)
+TwitchBlox.Events.OnChannelFollow:Connect(simpleEventLogger)
+TwitchBlox.Events.OnChannelHypeTrainBegin:Connect(simpleEventLogger)
+TwitchBlox.Events.OnChannelHypeTrainProgress:Connect(simpleEventLogger)
+TwitchBlox.Events.OnChannelHypeTrainEnd:Connect(simpleEventLogger)
+TwitchBlox.Events.OnChannelPointRedemptionAdd:Connect(simpleEventLogger)
+TwitchBlox.Events.OnChannelRaid:Connect(simpleEventLogger)
+TwitchBlox.Events.OnChannelSubscribe:Connect(simpleEventLogger)
+TwitchBlox.Events.OnChannelSubscriptionGift:Connect(simpleEventLogger)
+TwitchBlox.Events.OnChannelSubscriptionMessage:Connect(simpleEventLogger)
 
+
+-- 
 local success, message = TwitchBlox.Lifecycle:CheckConnection()
 if not success then
 	print(message)

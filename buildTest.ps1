@@ -1,2 +1,2 @@
 wally install
-rojo build --output ".\bin\TwitchBloxLibrary.rbxm" "default.project.json"
+rojo build --output ".\Bin\TwitchBloxLibrary.rbxm" "default.project.json"
