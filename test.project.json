@@ -1,14 +1,16 @@
 {
 	"name" : "TwitchBlox-Tests",
 	"tree" : {
+		"$className" : "Folder",
 		"main" : {
-			"$path" : "Debug/main.server.lua"
+			"$path" : "Debug/main.client.lua"
 		},
-		"Library" : {
+		"TwitchBlox" : {
 			"$path" : "Src",
 			"Packages" : {
 				"$path" : "Packages"
 			}
-		},
+		}
 	}
+	
 }

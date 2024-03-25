@@ -1,7 +1,7 @@
-local TwitchBlox = require(script.Parent.Library)
+local TwitchBlox = require(script.Parent.TwitchBlox)
 
 -- Generic Callback
-TwitchBlox.OnEvent:Connect(function(eventName, id, eventData, receivedDate)
+TwitchBlox.OnEventReceived:Connect(function(eventName, id, eventData, receivedDate)
 	print(string.format("%s - Received %s with id (%s)", receivedDate, eventName, id), eventData)
 end)
 
@@ -21,9 +21,26 @@ TwitchBlox.Events.OnChannelSubscriptionGift:Connect(simpleEventLogger)
 TwitchBlox.Events.OnChannelSubscriptionMessage:Connect(simpleEventLogger)
 
 
--- 
-local success, message = TwitchBlox.Lifecycle:CheckConnection()
-if not success then
+-- Begin initializing
+TwitchBlox.Lifecycle:getStatusAync():andThen(function()
+	-- All Good!
+	TwitchBlox.startPollingForEvents()
+
+	local rs = game:GetService("RunService")
+	if not rs:IsStudio() then
+		game:BindToClose(function()
+			TwitchBlox.stopPollingForEvents()
+		end)
+	end
+
+end, function(errCode, message)
 	print(message)
-	TwitchBlox.Lifecycle:ReqestLogin()
-end
+	if errCode == TwitchBlox.Enums.Errors.NoLocalhostAvailable then
+		warn("Localhost Server Not Running")
+	elseif errCode == TwitchBlox.Enums.Errors.NotAuthenticated then
+		warn("User Isn't Authenticated")
+		TwitchBlox.Lifecycle.login()
+	elseif errCode == TwitchBlox.Enums.Errors.NotConnected then
+		warn("Localhost Server Not Connected To Twitch")
+	end
+end)

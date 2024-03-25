@@ -4,7 +4,7 @@ local Signal = require(Packages.Signal)
 
 
 -- The configuration table is externally mutatable, we just need to grab the underlying table for now
-local config = require(LibraryRoot.Config)
+local createConfigTable = require(LibraryRoot.Config)
 
 local ConfigurationManager = {}
 ConfigurationManager.__index = ConfigurationManager
@@ -17,8 +17,12 @@ function ConfigurationManager.new(dependencies : {})
 		_config = {},
 	}
 
+	local configTable = createConfigTable(function(key, value)
+		cm:setValue(key, value)
+	end) 
+
 	-- copy the contents of the configuration file to break any connections
-	for k, v in pairs(config:_get()) do
+	for k, v in pairs(configTable:_get()) do
 		cm._config[k] = v
 	end
 

@@ -7,10 +7,10 @@ local configuration = {
 	-- networking
 	HTTP_DEBUG = true,
 	HTTP_USE_HTTPS = false,
-	HTTP_HOST = "localhost"
-	HTTP_PORT = "3000",
-	HTTP_POLLING_INTERVAL = 1500, -- ms
-	HTTP_POLLING_TIMEOUT = 2000, -- ms
+	HTTP_HOST = "localhost",
+	HTTP_PORT = 3000,
+	HTTP_POLLING_INTERVAL_MS = 1500, -- ms
+	HTTP_POLLING_TIMEOUT_MS = 2000, -- ms
 
 	-- logging
 	LOGGING_LEVEL = 4, -- trace
@@ -21,7 +21,7 @@ local configuration = {
 }
 
 
-return function(managers)
+return function(onValueChanged : (any, any)->())
 	-- create a proxy table so that any run-time accesses and mutations may be tracked
 	return setmetatable({
 		-- create a simple accessor for the ConfigurationManager
@@ -35,7 +35,7 @@ return function(managers)
 				return v
 			end
 
-			managers.LogManager:error(string.format("Attempt to get a non-existent field in the configuration : %s", tostring(key)))
+			error(string.format("Attempt to get a non-existent field in the configuration : %s", tostring(key)))
 			return nil
 		end,
 
@@ -44,9 +44,9 @@ return function(managers)
 				configuration[key] = value
 				
 				-- the Configuration Manager is the source of truth once it's loaded, so send any changes there as well
-				managers.ConfigurationManager:setValue(key, value)
+				onValueChanged(key, value)
 			else
-				managers.LogManager:error(string.format("Attempt to set a non-existent field in the configuration : %s with value %s", tostring(key), tostring(value)), 2)
+				error(string.format("Attempt to set a non-existent field in the configuration : %s with value %s", tostring(key), tostring(value)), 2)
 			end
 		end,
 	})

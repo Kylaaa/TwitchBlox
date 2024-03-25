@@ -17,7 +17,7 @@ function NetworkingManager.new(dependencies : {})
 		protocol = cm:getValue("HTTP_USE_HTTPS") and "https" or "http",
 		host = cm:getValue("HTTP_HOST"),
 		port = cm:getValue("HTTP_PORT"),
-		interval = cm:getValue("HTTP_POLLING_INTERVAL"),
+		interval = cm:getValue("HTTP_POLLING_INTERVAL_MS"),
 		timeout = cm:getValue("HTTP_POLLING_TIMEOUT"),
 		httpImpl = Http.new({
 			DEBUG = cm:getValue("HTTP_DEBUG"),
@@ -29,7 +29,7 @@ function NetworkingManager.new(dependencies : {})
 		nm.protocol = cm:getValue("HTTP_USE_HTTPS") and "https" or "http"
 		nm.host = cm:getValue("HTTP_HOST")
 		nm.port = cm:getValue("HTTP_PORT")
-		nm.interval = cm:getValue("HTTP_POLLING_INTERVAL")
+		nm.interval = cm:getValue("HTTP_POLLING_INTERVAL_MS")
 		nm.timeout = cm:getValue("HTTP_POLLING_TIMEOUT")
 		nm.httpImpl = Http.new({
 			DEBUG = cm:getValue("HTTP_DEBUG"),
@@ -56,7 +56,7 @@ function NetworkingManager:constructLocalhostUrl(path : string, args : {}?) : st
 		argString = "?" .. table.concat(argList, "&")
 	end
 
-	return string.format("%s://%s:%s/%s%s", self.protocol, self.host, self.port, path, argString)
+	return string.format("%s://%s:%d/%s%s", self.protocol, self.host, self.port, path, argString)
 end
 
 function NetworkingManager:request(method, url, body)
