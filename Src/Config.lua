@@ -13,11 +13,8 @@ local configuration = {
 	HTTP_POLLING_TIMEOUT_MS = 2000, -- ms
 
 	-- logging
-	LOGGING_LEVEL = 4, -- trace
-	LOG_TO_OUTPUT = true,
-
-	-- DEBUG
-	OVERRIDE_SETTINGS = true, -- erases stored setting values and writes default values
+	LOGGING_LEVEL = 0, -- trace
+	LOG_TO_OUTPUT = false,
 }
 
 
