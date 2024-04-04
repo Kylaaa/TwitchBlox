@@ -1,5 +1,5 @@
 local LibraryRoot = script:FindFirstAncestor("TwitchBlox")
-local Packages = LibraryRoot.Packages
+local Packages = if LibraryRoot:FindFirstChild("Packages") then LibraryRoot.Packages else LibraryRoot.Parent
 local Signal = require(Packages.Signal)
 
 

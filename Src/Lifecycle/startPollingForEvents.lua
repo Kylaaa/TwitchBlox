@@ -7,18 +7,18 @@ return function(managers : {})
 
 	-- check if already polling for events
 	if sm.pollingToken then
-		--sm.pollingToken:Disconnect()
+		sm.pollingToken:Disconnect()
 		return
 	end
 
 	return function()
-		local POLLING_INTERVAL = cm:get("HTTP_POLLING_INTERVAL_MS") / 1000.0
+		local POLLING_INTERVAL = cm:getValue("HTTP_POLLING_INTERVAL_MS") / 1000.0
 		local startWindow = em:getCurrentISOTimestamp()
 
 		local disconnectToken = em:callOnInterval(POLLING_INTERVAL, function()
 			local endWindow = em:getCurrentISOTimestamp()
 			nm:requestEventsBetween(startWindow, endWindow):andThen(function(response)
-				for _, event in ipairs(response.events) do
+				for _, event in ipairs(response.Body.events) do
 					em:parseEvent(event)
 				end
 			end)

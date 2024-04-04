@@ -1,6 +1,6 @@
 local LibraryRoot = script:FindFirstAncestor("TwitchBlox")
 
-local Packages = LibraryRoot.Packages
+local Packages = if LibraryRoot:FindFirstChild("Packages") then LibraryRoot.Packages else LibraryRoot.Parent
 local Http = require(Packages.Http)
 
 local HttpService = game:GetService("HttpService")
@@ -18,7 +18,7 @@ function NetworkingManager.new(dependencies : {})
 		host = cm:getValue("HTTP_HOST"),
 		port = cm:getValue("HTTP_PORT"),
 		interval = cm:getValue("HTTP_POLLING_INTERVAL_MS"),
-		timeout = cm:getValue("HTTP_POLLING_TIMEOUT"),
+		timeout = cm:getValue("HTTP_POLLING_TIMEOUT_MS"),
 		httpImpl = Http.new({
 			DEBUG = cm:getValue("HTTP_DEBUG"),
 		}),
@@ -38,9 +38,7 @@ function NetworkingManager.new(dependencies : {})
 
 	local children = script:GetChildren()
 	for _, requestFunction in ipairs(children) do
-		nm[requestFunction.Name] = function(...)
-			requestFunction(nm, ...)
-		end
+		nm[requestFunction.Name] = require(requestFunction)
 	end
 
 	return setmetatable(nm, NetworkingManager)

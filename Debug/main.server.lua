@@ -22,9 +22,9 @@ TwitchBlox.Events.OnChannelSubscriptionMessage:Connect(simpleEventLogger)
 
 
 -- Begin initializing
-TwitchBlox.Lifecycle:getStatusAync():andThen(function()
+TwitchBlox.Lifecycle.getStatusAsync():andThen(function()
 	-- All Good!
-	TwitchBlox.startPollingForEvents()
+	TwitchBlox.Lifecycle.startPollingForEvents()
 
 	local rs = game:GetService("RunService")
 	if not rs:IsStudio() then
@@ -34,7 +34,6 @@ TwitchBlox.Lifecycle:getStatusAync():andThen(function()
 	end
 
 end, function(errCode, message)
-	print(message)
 	if errCode == TwitchBlox.Enums.Errors.NoLocalhostAvailable then
 		warn("Localhost Server Not Running")
 	elseif errCode == TwitchBlox.Enums.Errors.NotAuthenticated then

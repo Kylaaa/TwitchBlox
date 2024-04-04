@@ -1,5 +1,6 @@
 local LibraryRoot = script:FindFirstAncestor("TwitchBlox")
-local Signal = require(LibraryRoot.Packages.Signal)
+local Packages = if LibraryRoot:FindFirstChild("Packages") then LibraryRoot.Packages else LibraryRoot.Parent
+local Signal = require(Packages.Signal)
 
 --[[
 {
@@ -39,7 +40,7 @@ local function parseEvent(id, time, eventData)
 		top = eventData["top_contributions"],
 	}
 
-	eventSignal.fire(id, time, receiver, trainInfo, contributors)
+	eventSignal:Fire(id, time, receiver, trainInfo, contributors)
 end
 
 return { "channel.hype_train.end", eventSignal, parseEvent }

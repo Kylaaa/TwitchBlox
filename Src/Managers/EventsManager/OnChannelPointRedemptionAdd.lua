@@ -1,5 +1,6 @@
 local LibraryRoot = script:FindFirstAncestor("TwitchBlox")
-local Signal = require(LibraryRoot.Packages.Signal)
+local Packages = if LibraryRoot:FindFirstChild("Packages") then LibraryRoot.Packages else LibraryRoot.Parent
+local Signal = require(Packages.Signal)
 
 --[[
 {
@@ -40,7 +41,7 @@ local function parseEvent(id, time, eventData)
 		prompt = eventData["reward"]["prompt"],
 		redeemed = eventData["redeemed_at"],
 	}
-	eventSignal.fire(id, time, sender, rewardInfo)
+	eventSignal:Fire(id, time, sender, rewardInfo)
 end
 
 return { "channel.channel_points_custom_reward_redemption.add", eventSignal, parseEvent }

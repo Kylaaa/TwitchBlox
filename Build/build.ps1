@@ -5,11 +5,11 @@ param(
 
 	[Parameter(Mandatory=$false)]
 	[Alias("Output")]
-	[string]$outputName = "TwitchBloxLibrary.rbxm"
+	[string]$outputName = "TwitchBloxLibrary-Wally.rbxm"
 )
 
 $originalDirectory = $pwd
-$projectRoot = Resolve-Path -Path "$pwd\.."
+$projectRoot = Resolve-Path -Path "$PSScriptRoot\.."
 $binDirectory = "$projectRoot\Bin"
 
 $outFile = "$projectRoot\Bin\$outputName"

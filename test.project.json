@@ -3,7 +3,7 @@
 	"tree" : {
 		"$className" : "Folder",
 		"main" : {
-			"$path" : "Debug/main.client.lua"
+			"$path" : "Debug/main.server.lua"
 		},
 		"TwitchBlox" : {
 			"$path" : "Src",

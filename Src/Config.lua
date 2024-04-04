@@ -5,7 +5,7 @@ local configuration = {
 	LIBRARY_VERSION = "0.0.1",
 
 	-- networking
-	HTTP_DEBUG = true,
+	HTTP_DEBUG = false,
 	HTTP_USE_HTTPS = false,
 	HTTP_HOST = "localhost",
 	HTTP_PORT = 3000,

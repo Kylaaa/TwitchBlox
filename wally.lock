@@ -9,7 +9,7 @@ dependencies = []
 
 [[package]]
 name = "kylaaa/http"
-version = "0.2.0"
+version = "0.5.0"
 dependencies = [["Promise", "evaera/promise@4.0.0"]]
 
 [[package]]
@@ -19,8 +19,8 @@ dependencies = []
 
 [[package]]
 name = "kylaaa/twitchblox"
-version = "0.2.0"
-dependencies = [["Http", "kylaaa/http@0.2.0"], ["Karen", "kylaaa/karen@0.1.5"], ["Promise", "evaera/promise@4.0.0"], ["Signal", "sleitnick/signal@1.5.0"]]
+version = "0.3.0"
+dependencies = [["Http", "kylaaa/http@0.5.0"], ["Karen", "kylaaa/karen@0.1.5"], ["Promise", "evaera/promise@4.0.0"], ["Signal", "sleitnick/signal@1.5.0"]]
 
 [[package]]
 name = "sleitnick/signal"

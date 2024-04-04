@@ -1,6 +1,6 @@
 local LibraryRoot = script:FindFirstAncestor("TwitchBlox")
 
-local Packages = LibraryRoot.Packages
+local Packages = if LibraryRoot:FindFirstChild("Packages") then LibraryRoot.Packages else LibraryRoot.Parent
 local Signal = require(Packages.Signal)
 
 
@@ -33,26 +33,25 @@ end
 
 function LogManager:log(level : number, ...)
 	assert(level ~= LogManager.LogLevel.None, "level cannot be `None`")
-
-	if level <= self.LogLevel then
-		self.NewMessage:fire(level, ...)
+	if level <= self.logLevel then
+		self.NewMessage:Fire(level, ...)
 	end
 end
 
 function LogManager:error(...)
-	self:log(LogManager.Error, ...)
+	self:log(LogManager.LogLevel.Error, ...)
 end
 
 function LogManager:warn(...)
-	self:log(LogManager.Warning, ...)
+	self:log(LogManager.LogLevel.Warning, ...)
 end
 
 function LogManager:message(...)
-	self:log(LogManager.Message, ...)
+	self:log(LogManager.LogLevel.Message, ...)
 end
 
 function LogManager:trace(...)
-	self:log(LogManager.Trace, ...)
+	self:log(LogManager.LogLevel.Trace, ...)
 end
 
 return LogManager

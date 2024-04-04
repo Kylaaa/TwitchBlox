@@ -1,7 +1,4 @@
-local LibraryRoot = script:FindFirstAncestor("TwitchBlox")
-local Packages = LibraryRoot.Packages
-
-return function(managers) : LifecycleEvents
+return function(managers)
 	return {
 		--1) Check for an existing connection
 			--a) Check for the localhost, fails if the local server isn't running

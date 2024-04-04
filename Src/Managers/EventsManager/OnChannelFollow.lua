@@ -1,5 +1,6 @@
 local LibraryRoot = script:FindFirstAncestor("TwitchBlox")
-local Signal = require(LibraryRoot.Packages.Signal)
+local Packages = if LibraryRoot:FindFirstChild("Packages") then LibraryRoot.Packages else LibraryRoot.Parent
+local Signal = require(Packages.Signal)
 
 --[[
 {
@@ -24,7 +25,7 @@ local function parseEvent(id, time, eventData)
 		userId = eventData["broadcaster_user_id"],
 		userName = eventData["broadcaster_user_name"],
 	}
-	eventSignal.fire(id, time, sender, receiver)
+	eventSignal:Fire(id, time, sender, receiver)
 end
 
 return { "channel.follow", eventSignal, parseEvent }

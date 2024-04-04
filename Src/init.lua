@@ -1,6 +1,6 @@
 --!strict
 local LibraryRoot = script
-local Packages = LibraryRoot.Packages
+local Packages = if LibraryRoot:FindFirstChild("Packages") then LibraryRoot.Packages else LibraryRoot.Parent
 local Karen = require(Packages.Karen)
 
 local Managers = LibraryRoot.Managers
@@ -41,10 +41,10 @@ local library = {
 	Configuration = require(script.Config)(sm),
 	Enums = require(script.Enums),
 	
-	-- Actions for 
+	-- Actions
 	Lifecycle = require(script.Lifecycle)(sm),
 
-	-- events for subscribing
+	-- Events for subscribing
 	OnEventReceived = em.OnEventReceived,
 	Events = em.events,
 }
